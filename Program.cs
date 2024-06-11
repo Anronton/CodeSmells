@@ -1,4 +1,6 @@
 ﻿using CodeSmells;
+using CodeSmells.Interfaces;
+using CodeSmells.Services;
 
 namespace MooGame
 {
@@ -7,7 +9,8 @@ namespace MooGame
 
         public static void Main(string[] args)
         {
-            GameController controller = new GameController();
+            IInputOutput ioService = new InputOutputService();
+            GameController controller = new GameController(ioService);
             controller.StartGame();
         }
     }

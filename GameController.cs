@@ -1,4 +1,5 @@
 ﻿using CodeSmells.Classes;
+using CodeSmells.Interfaces;
 using MooGame;
 using System;
 using System.Collections.Generic;
@@ -10,39 +11,45 @@ namespace CodeSmells
 {
     public class GameController
     {
+        private readonly IInputOutput _io;
+        public GameController(IInputOutput ioService)
+        {
+            _io = ioService; // sen härifrån!
+        }
+
         public void StartGame()
         {
             bool playOn = true;
-            Console.WriteLine("Enter your user name:\n");
-            string name = Console.ReadLine();
+            _io.WriteLine("Enter your user name:\n");
+            string name = _io.ReadLine();
 
             while (playOn)
             {
                 string goal = makeGoal();
 
 
-                Console.WriteLine("New game:\n");
+                _io.WriteLine("New game:\n");
                 //comment out or remove next line to play real games!
-                Console.WriteLine("For practice, number is: " + goal + "\n");
-                string guess = Console.ReadLine();
+                _io.WriteLine("For practice, number is: " + goal + "\n");
+                string guess = _io.ReadLine();
 
                 int nGuess = 1;
                 string bbcc = checkBC(goal, guess);
-                Console.WriteLine(bbcc + "\n");
+                _io.WriteLine(bbcc + "\n");
                 while (bbcc != "BBBB,")
                 {
                     nGuess++;
-                    guess = Console.ReadLine();
-                    Console.WriteLine(guess + "\n");
+                    guess = _io.ReadLine();
+                    _io.WriteLine(guess + "\n");
                     bbcc = checkBC(goal, guess);
-                    Console.WriteLine(bbcc + "\n");
+                    _io.WriteLine(bbcc + "\n");
                 }
                 StreamWriter output = new StreamWriter("result.txt", append: true);
                 output.WriteLine(name + "#&#" + nGuess);
                 output.Close();
-                showTopList();
-                Console.WriteLine("Correct, it took " + nGuess + " guesses\nContinue?");
-                string answer = Console.ReadLine();
+                ShowTopList();
+                _io.WriteLine("Correct, it took " + nGuess + " guesses\nContinue?");
+                string answer = _io.ReadLine();
                 if (answer != null && answer != "" && answer.Substring(0, 1) == "n")
                 {
                     playOn = false;
@@ -91,7 +98,7 @@ namespace CodeSmells
             }
             return "BBBB".Substring(0, bulls) + "," + "CCCC".Substring(0, cows);
         }
-        static void showTopList()
+        private void ShowTopList()
         {
             StreamReader input = new StreamReader("result.txt");
             List<PlayerData> results = new List<PlayerData>();
@@ -115,10 +122,10 @@ namespace CodeSmells
 
             }
             results.Sort((p1, p2) => p1.Average().CompareTo(p2.Average()));
-            Console.WriteLine("Player   games average");
+            _io.WriteLine("Player   games average");
             foreach (PlayerData p in results)
             {
-                Console.WriteLine(string.Format("{0,-9}{1,5:D}{2,9:F2}", p.Name, p.NGames, p.Average()));
+                _io.WriteLine(string.Format("{0,-9}{1,5:D}{2,9:F2}", p.Name, p.NGames, p.Average()));
             }
             input.Close();
         }
