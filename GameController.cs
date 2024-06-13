@@ -4,6 +4,7 @@ using MooGame;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,7 +15,7 @@ namespace CodeSmells
         private readonly IInputOutput _io;
         public GameController(IInputOutput ioService)
         {
-            _io = ioService; // sen härifrån!
+            _io = ioService;
         }
 
         public void StartGame()
@@ -25,23 +26,23 @@ namespace CodeSmells
 
             while (playOn)
             {
-                string goal = makeGoal();
+                string goal = MakeGoal();
 
 
                 _io.WriteLine("New game:\n");
                 //comment out or remove next line to play real games!
                 _io.WriteLine("For practice, number is: " + goal + "\n");
-                string guess = _io.ReadLine();
+                string guess = GetValidGuess();
 
                 int nGuess = 1;
-                string bbcc = checkBC(goal, guess);
+                string bbcc = CheckBullsAndCows(goal, guess);
                 _io.WriteLine(bbcc + "\n");
                 while (bbcc != "BBBB,")
                 {
                     nGuess++;
                     guess = _io.ReadLine();
                     _io.WriteLine(guess + "\n");
-                    bbcc = checkBC(goal, guess);
+                    bbcc = CheckBullsAndCows(goal, guess);
                     _io.WriteLine(bbcc + "\n");
                 }
                 StreamWriter output = new StreamWriter("result.txt", append: true);
@@ -57,48 +58,79 @@ namespace CodeSmells
             }
         }
 
-        static string makeGoal()
+        private string GetValidGuess()
         {
-            Random randomGenerator = new Random();
-            string goal = "";
-            for (int i = 0; i < 4; i++)
+            while (true)
             {
-                int random = randomGenerator.Next(10);
-                string randomDigit = "" + random;
-                while (goal.Contains(randomDigit))
+                _io.WriteLine("Enter your guess (4 digits):");
+                string guess = _io.ReadLine().Trim();
+
+                if (guess.Length == 4)
                 {
-                    random = randomGenerator.Next(10);
-                    randomDigit = "" + random;
+                    return guess;
                 }
-                goal = goal + randomDigit;
+                _io.WriteLine("Invalid input. Please enter exactly 4 digits.");
             }
-            return goal;
         }
 
-        static string checkBC(string goal, string guess)
+        static string MakeGoal() // icke static?
         {
-            int cows = 0, bulls = 0;
-            guess += "    ";     // if player entered less than 4 chars
-            for (int i = 0; i < 4; i++)
+            Random randomGenerator = new Random();
+            var digits = Enumerable.Range(0, 10).ToList();
+            var shuffledDigits = digits.OrderBy(d => randomGenerator.Next()).Take(4).ToList();
+
+            return string.Join("", shuffledDigits);
+        }
+
+
+        public string CheckBullsAndCows(string goal, string guess) // vill nog sen dela upp den i två för SoP
+        {
+            int bulls = 0;
+            int cows = 0;
+            bool[] bullMarked = new bool[goal.Length];
+            bool[] cowMarked = new bool[goal.Length];
+
+            // Först räkna och markera tjurar
+            for (int i = 0; i < Math.Min(4, goal.Length); i++)
             {
-                for (int j = 0; j < 4; j++)
+                if (goal[i] == guess[i])
                 {
-                    if (goal[i] == guess[j])
+                    bulls++;
+                    bullMarked[i] = true;  // Markera denna position som en tjur
+                }
+            }
+
+            // Nu räkna kor, ignorera tjur-markeringar
+            for (int i = 0; i < Math.Min(4, goal.Length); i++)
+            {
+                if (!bullMarked[i])  // Söker kor bara om inte redan tjur
+                {
+                    for (int j = 0; j < Math.Min(4, guess.Length); j++)
                     {
-                        if (i == j)
-                        {
-                            bulls++;
-                        }
-                        else
+                        if (i != j && goal[i] == guess[j] && !bullMarked[j] && !cowMarked[j])
                         {
                             cows++;
+                            cowMarked[j] = true;  // Markera denna position för att undvika dubbelräkning av samma ko
+                            break;  // Bryt loopen när en matchning hittas
                         }
                     }
                 }
             }
-            return "BBBB".Substring(0, bulls) + "," + "CCCC".Substring(0, cows);
+
+            return FormatBullsAndCows(bulls, cows);
         }
-        private void ShowTopList()
+
+        private string FormatBullsAndCows(int bulls, int cows)
+        {
+            return $"{new String('B', bulls)},{new String('C', cows)}";
+        }
+
+
+
+
+
+
+        private void ShowTopList() // denna hör nog till playerData i högsta grad
         {
             StreamReader input = new StreamReader("result.txt");
             List<PlayerData> results = new List<PlayerData>();
