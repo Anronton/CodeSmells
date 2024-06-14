@@ -31,15 +31,15 @@ public class PlayerData
         return (double)totalGuess / NGames;
     }
 
+    // Currently not in use. Uncomment if needed for hash-based collections or comparisons.
+    //public override bool Equals(Object p)
+    //{
+    //    return Name.Equals(((PlayerData)p).Name);
+    //}
 
-    public override bool Equals(Object p)
-    {
-        return Name.Equals(((PlayerData)p).Name);
-    }
 
-
-    public override int GetHashCode()
-    {
-        return Name.GetHashCode();
-    }
+    //public override int GetHashCode()
+    //{
+    //    return Name.GetHashCode();
+    //}
 }

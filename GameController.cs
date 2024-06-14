@@ -40,7 +40,7 @@ public class GameController
     {
         _ioService.WriteLine("New game:\n");
         //comment out or remove next line to play real games!
-        //_ioService.WriteLine("For practice, number is: " + goal + "\n");  // Optional debug line
+        _ioService.WriteLine("For practice, number is: " + goal + "\n");  // Optional debug line
 
         int nGuess = 0;
         while (true)
@@ -82,7 +82,7 @@ public class GameController
         }
     }
 
-    static string MakeGoal() // icke static för senare testning
+    static string MakeGoal() // icke static för senare testning?
     {
         Random randomGenerator = new Random();
         var digits = Enumerable.Range(0, 10).ToList();

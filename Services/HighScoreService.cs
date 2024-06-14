@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CodeSmells.Services;
 
-public class HighScoreService
+public class HighScoreService // Denna och PlayerData-klassen ska granskas näst!
 {
     private const string ResultFilePath = "result.txt"; // borde den vara i PascalCase?
 
@@ -28,9 +28,9 @@ public class HighScoreService
             string line;
             while((line = input.ReadLine()) != null)
             {
-                var parts = line.Split(new string[] { "#&#" }, StringSplitOptions.None); //?? vad är ens denna
-                var name = parts[0];
-                var guesses = int.Parse(parts[1]); // den fattar iaf
+                var nameAndGuesses = line.Split(new string[] { "#&#" }, StringSplitOptions.None); // en separator som säkerställer korrekt separering mellan namn och antal gissningar
+                var name = nameAndGuesses[0]; //name är första delen
+                var guesses = int.Parse(nameAndGuesses[1]); //gissningar är andra delen
                 var playerData = new PlayerData(name, guesses);
                 var pos = results.FindIndex(p => p.Name == name);
                 if (pos == -1)
@@ -45,11 +45,38 @@ public class HighScoreService
         }
 
         results.Sort((p1, p2) => p1.Average().CompareTo(p2.Average()));
+        io.WriteLine("Player   games  average");
         foreach (var p in results)
         {
-            io.WriteLine($"{p.Name,-9}{p.NGames,5:D}{p.Average(),9:F2}"); // fattar inte alls denna interpolerade strängen, någon slags formattering
+            io.WriteLine($"{p.Name,-9}{p.NGames,5:D}{p.Average(),9:F2}"); // formattering: namn fältbredd på 9 tecken justerat till vänster, Ngames 5heltal justerat till höger, flytande tal med 2decimaler totalt 9tecken ink decimaltecknet
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     //public void ShowTopList() // den gamla för att motivera steg för steg sen om det behövs
     //{
