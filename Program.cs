@@ -2,17 +2,16 @@
 using CodeSmells.Interfaces;
 using CodeSmells.Services;
 
-namespace MooGame
-{
-    class Program
-    {
+namespace MooGame;
 
-        public static void Main(string[] args)
-        {
-            IInputOutput ioService = new InputOutputService();
-            GameController controller = new GameController(ioService);
-            controller.StartGame();
-        }
+class Program
+{
+
+    public static void Main(string[] args)
+    {
+        IInputOutput ioService = new InputOutputService();
+        GameController controller = new GameController(ioService);
+        controller.StartGame();
     }
 }
 
