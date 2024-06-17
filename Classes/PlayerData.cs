@@ -10,25 +10,25 @@ public class PlayerData
 {
     public string Name { get; private set; }
     public int NGames { get; private set; }
-    int totalGuess;
+    public int TotalGuesses;
 
 
     public PlayerData(string name, int guesses)
     {
         Name = name;
         NGames = 1;
-        totalGuess = guesses;
+        TotalGuesses = guesses;
     }
 
     public void Update(int guesses)
     {
-        totalGuess += guesses;
+        TotalGuesses += guesses;
         NGames++;
     }
 
     public double Average()
     {
-        return (double)totalGuess / NGames;
+        return (double)TotalGuesses / NGames;
     }
 
     // Currently not in use. Uncomment if needed for hash-based collections or comparisons.
