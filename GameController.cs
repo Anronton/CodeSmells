@@ -82,7 +82,7 @@ public class GameController
         }
     }
 
-    static string MakeGoal() // icke static för senare testning?
+    private string MakeGoal()
     {
         Random randomGenerator = new Random();
         var digits = Enumerable.Range(0, 10).ToList();
@@ -91,7 +91,7 @@ public class GameController
         return string.Join("", shuffledDigits);
     }
 
-    public string CheckBullsAndCows(string goal, string guess) // vill nog sen dela upp den i två för SoP
+    public string CheckBullsAndCows(string goal, string guess) // vill nog sen dela upp den i två för SoP, kommer under test!
     {
         int bulls = 0;
         int cows = 0;

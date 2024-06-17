@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace CodeSmells.Services;
 
-public class HighScoreService : IHighScore // Denna och PlayerData-klassen ska granskas näst!
+public class HighScoreService : IHighScore
 {
-    private const string ResultFilePath = "result.txt"; // borde den vara i PascalCase?
+    private const string ResultFilePath = "result.txt";
 
     public void RecordResult(string playerName, int nGuess)
     {
@@ -20,7 +20,7 @@ public class HighScoreService : IHighScore // Denna och PlayerData-klassen ska g
         }
     }
 
-    public void ShowTopList(IInputOutput io) // denna behöver jag förstå mer så att den går att förklara bättre, ska testa ifall den funkar
+    public void ShowTopList(IInputOutput io) 
     {
         var results = new List<PlayerData>();
         using (var input = new StreamReader(ResultFilePath))
@@ -48,10 +48,10 @@ public class HighScoreService : IHighScore // Denna och PlayerData-klassen ska g
         io.WriteLine("Player   games  average");
         foreach (var p in results)
         {
-            io.WriteLine($"{p.Name,-9}{p.NGames,5:D}{p.Average(),9:F2}"); // formattering: namn fältbredd på 9 tecken justerat till vänster, Ngames 5heltal justerat till höger, flytande tal med 2decimaler totalt 9tecken ink decimaltecknet
+            io.WriteLine($"{p.Name,-9}{p.NGames,5:D}{p.Average(),9:F2}"); 
         }
     }
-
+    // formattering: namn fältbredd på 9 tecken justerat till vänster, Ngames 5heltal justerat till höger, flytande tal med 2decimaler totalt 9tecken ink decimaltecknet
 
 
 
