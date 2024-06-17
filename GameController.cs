@@ -14,9 +14,9 @@ namespace CodeSmells;
 public class GameController
 {
     private readonly IInputOutput _ioService;
-    private readonly HighScoreService _highScoreService;
+    private readonly IHighScore _highScoreService;
 
-    public GameController(IInputOutput ioService, HighScoreService highScoreService)
+    public GameController(IInputOutput ioService, IHighScore highScoreService)
     {
         _ioService = ioService;
         _highScoreService = highScoreService;

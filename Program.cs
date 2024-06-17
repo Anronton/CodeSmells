@@ -9,7 +9,7 @@ class Program
 
     public static void Main(string[] args)
     {
-        var highScoreService = new HighScoreService(); // kanske göra ett interface av den??
+        IHighScore highScoreService = new HighScoreService();
         IInputOutput ioService = new InputOutputService();
         GameController controller = new GameController(ioService, highScoreService);
         controller.StartGame();

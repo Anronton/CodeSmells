@@ -15,7 +15,7 @@ public class PlayerData
 
     public PlayerData(string name, int guesses)
     {
-        this.Name = name;
+        Name = name;
         NGames = 1;
         totalGuess = guesses;
     }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CodeSmells.Services;
 
-public class HighScoreService // Denna och PlayerData-klassen ska granskas näst!
+public class HighScoreService : IHighScore // Denna och PlayerData-klassen ska granskas näst!
 {
     private const string ResultFilePath = "result.txt"; // borde den vara i PascalCase?
 
