@@ -10,11 +10,16 @@ namespace CodeSmells.Services;
 
 public class HighScoreService : IHighScore
 {
-    private const string ResultFilePath = "result.txt";
+    private readonly string _resultFilePath;
+
+    public HighScoreService(string resultFilePath = "result.txt")
+    {
+        _resultFilePath = resultFilePath;
+    }
 
     public void RecordResult(string playerName, int nGuess)
     {
-        using (var output = new StreamWriter(ResultFilePath, append: true))
+        using (var output = new StreamWriter(_resultFilePath, append: true))
         {
             output.WriteLine($"{playerName}#&#{nGuess}");
         }
@@ -23,7 +28,7 @@ public class HighScoreService : IHighScore
     public void ShowTopList(IInputOutput io) 
     {
         var results = new List<PlayerData>();
-        using (var input = new StreamReader(ResultFilePath))
+        using (var input = new StreamReader(_resultFilePath))
         {
             string line;
             while((line = input.ReadLine()) != null)

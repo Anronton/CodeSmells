@@ -67,7 +67,7 @@ public class GameController
         return answer != null && answer.Trim().ToLower() == "y"; 
     }
 
-    private string GetValidGuess()
+    private string GetValidGuess() // typsäkra så att den bara tar emot int
     {
         while (true)
         {
