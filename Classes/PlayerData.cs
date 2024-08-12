@@ -9,26 +9,26 @@ namespace CodeSmells.Classes;
 public class PlayerData
 {
     public string Name { get; private set; }
-    public int NGames { get; private set; }
+    public int TotalGames { get; private set; }
     public int TotalGuesses;
 
 
     public PlayerData(string name, int guesses)
     {
         Name = name;
-        NGames = 1;
+        TotalGames = 1;
         TotalGuesses = guesses;
     }
 
     public void Update(int guesses)
     {
         TotalGuesses += guesses;
-        NGames++;
+        TotalGames++;
     }
 
     public double Average()
     {
-        return (double)TotalGuesses / NGames;
+        return (double)TotalGuesses / TotalGames;
     }
 
     // Currently not in use. Uncomment if needed for hash-based collections or comparisons.

@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace CodeSmells.Interfaces;
 
-internal interface IGameEngine
+public interface IGameEngine
 {
-
+    void InitializeGame(IInputOutput ioService);
+    string GetValidGuess(IInputOutput ioService);
+    string CheckGuess(string guess);
+    bool QueryContinue(IInputOutput ioService);
+    int NumberOfGuesses { get; }
 }

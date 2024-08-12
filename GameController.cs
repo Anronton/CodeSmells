@@ -15,122 +15,42 @@ public class GameController
 {
     private readonly IInputOutput _ioService;
     private readonly IHighScore _highScoreService;
+    private readonly IGameEngine _gameEngine;
 
-    public GameController(IInputOutput ioService, IHighScore highScoreService)
+    public GameController(IInputOutput ioService, IHighScore highScoreService, IGameEngine gameEngine)
     {
         _ioService = ioService;
         _highScoreService = highScoreService;
+        _gameEngine = gameEngine;
     }
 
     public void StartGame()
     {
-        _ioService.WriteLine("Enter your user name:\n");
+        _ioService.WriteLine("Enter your user name:" + Environment.NewLine);
         string name = _ioService.ReadLine();
         bool playOn = true;
 
+
         while (playOn)
         {
-            string goal = MakeGoal();
-            PlaySingleGame(name, goal);
-            playOn = QueryContinue();
-        }
-    }
 
-    private void PlaySingleGame(string playerName, string goal)
-    {
-        _ioService.WriteLine("New game:\n");
-        //comment out or remove next line to play real games!
-        _ioService.WriteLine("For practice, number is: " + goal + "\n");  // Optional debug line
+            _gameEngine.InitializeGame(_ioService);
 
-        int nGuess = 0;
-        while (true)
-        {
-            string guess = GetValidGuess();
-            nGuess++;
-            string result = CheckBullsAndCows(goal, guess);
-            _ioService.WriteLine(result + "\n");
-
-            if (result == "BBBB,")
+            while (true)
             {
-                _highScoreService.RecordResult(playerName, nGuess);
-                _highScoreService.ShowTopList(_ioService);
-                _ioService.WriteLine("Correct, it took " + nGuess + " guesses\n");
-                break;
-            }
-        }
-    }
+                string guess = _gameEngine.GetValidGuess(_ioService);
+                string result = _gameEngine.CheckGuess(guess);
+                _ioService?.WriteLine(result + Environment.NewLine);
 
-    private bool QueryContinue()
-    {
-        _ioService.WriteLine("Continue? (y/n)");
-        string answer = _ioService.ReadLine();
-        return answer != null && answer.Trim().ToLower() == "y"; 
-    }
-
-    private string GetValidGuess() // typsäkra så att den bara tar emot int
-    {
-        while (true)
-        {
-            _ioService.WriteLine("Enter your guess (4 digits):");
-            string guess = _ioService.ReadLine().Trim();
-
-            if (guess.Length == 4)
-            {
-                return guess;
-            }
-            _ioService.WriteLine("Invalid input. Please enter exactly 4 digits.");
-        }
-    }
-
-    private string MakeGoal()
-    {
-        Random randomGenerator = new Random();
-        var digits = Enumerable.Range(0, 10).ToList();
-        var shuffledDigits = digits.OrderBy(d => randomGenerator.Next()).Take(4).ToList();
-
-        return string.Join("", shuffledDigits);
-    }
-
-    public string CheckBullsAndCows(string goal, string guess) // vill nog sen dela upp den i två för SoP, kommer under test!
-    {
-        int bulls = 0;
-        int cows = 0;
-        bool[] bullMarked = new bool[goal.Length];
-        bool[] cowMarked = new bool[goal.Length];
-
-        // Först räkna och markera tjurar
-        for (int i = 0; i < Math.Min(4, goal.Length); i++)
-        {
-            if (goal[i] == guess[i])
-            {
-                bulls++;
-                bullMarked[i] = true;  // Markera denna position som en tjur
-            }
-        }
-
-        // Nu räkna kor, ignorera tjur-markeringar
-        for (int i = 0; i < Math.Min(4, goal.Length); i++)
-        {
-            if (!bullMarked[i])  // Söker kor bara om inte redan tjur
-            {
-                for (int j = 0; j < Math.Min(4, guess.Length); j++)
+                if (result == "BBBB,")
                 {
-                    if (i != j && goal[i] == guess[j] && !bullMarked[j] && !cowMarked[j])
-                    {
-                        cows++;
-                        cowMarked[j] = true;  // Markera denna position för att undvika dubbelräkning av samma ko
-                        break;  // Bryt loopen när en matchning hittas
-                    }
+                    _highScoreService.RecordResult(name, _gameEngine.NumberOfGuesses);
+                    _highScoreService.ShowTopList(_ioService);
+                    _ioService.WriteLine("Correct, it took " + _gameEngine.NumberOfGuesses + " guesses" + Environment.NewLine);
+                    playOn = _gameEngine.QueryContinue(_ioService);
+                    break;
                 }
             }
         }
-
-        return FormatBullsAndCows(bulls, cows);
     }
-
-    private string FormatBullsAndCows(int bulls, int cows)
-    {
-        return $"{new String('B', bulls)},{new String('C', cows)}";
-    }
-
 }

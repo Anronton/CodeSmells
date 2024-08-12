@@ -11,7 +11,8 @@ class Program
     {
         IHighScore highScoreService = new HighScoreService();
         IInputOutput ioService = new InputOutputService();
-        GameController controller = new GameController(ioService, highScoreService);
+        IGameEngine gameEngine = new BullsAndCowsGameEngine();
+        GameController controller = new GameController(ioService, highScoreService, gameEngine);
         controller.StartGame();
     }
 }

@@ -53,7 +53,7 @@ public class HighScoreService : IHighScore
         io.WriteLine("Player   games  average");
         foreach (var p in results)
         {
-            io.WriteLine($"{p.Name,-9}{p.NGames,5:D}{p.Average(),9:F2}"); 
+            io.WriteLine($"{p.Name,-9}{p.TotalGames,5:D}{p.Average(),9:F2}"); 
         }
     }
     // formattering: namn fältbredd på 9 tecken justerat till vänster, Ngames 5heltal justerat till höger, flytande tal med 2decimaler totalt 9tecken ink decimaltecknet
