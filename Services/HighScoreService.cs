@@ -17,11 +17,11 @@ public class HighScoreService : IHighScore
         _resultFilePath = resultFilePath;
     }
 
-    public void RecordResult(string playerName, int nGuess)
+    public void RecordResult(string playerName, int totalGuesses)
     {
         using (var output = new StreamWriter(_resultFilePath, append: true))
         {
-            output.WriteLine($"{playerName}#&#{nGuess}");
+            output.WriteLine($"{playerName}#&#{totalGuesses}");
         }
     }
 

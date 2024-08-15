@@ -9,7 +9,7 @@ namespace CodeSmells.Interfaces;
 
 public interface IHighScore
 {
-    void RecordResult(string playerName, int nGuess);
+    void RecordResult(string playerName, int totalGuesses);
     public void ShowTopList(IInputOutput io); 
     
 }

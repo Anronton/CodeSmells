@@ -20,7 +20,7 @@ namespace CodeSmells
             //ioService.WriteLine("For practice, number is: " + currentGoal + Environment.NewLine); // Debug line
         }
 
-        public string GetValidGuess(IInputOutput ioService) // typsäkra så att den bara tar emot int
+        public string GetValidGuess(IInputOutput ioService) // eventuellt typsäkra så att den bara tar emot int
         {
             while (true)
             {
