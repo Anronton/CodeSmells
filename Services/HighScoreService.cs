@@ -12,7 +12,7 @@ public class HighScoreService : IHighScore
 {
     private readonly string _resultFilePath;
 
-    public HighScoreService(string resultFilePath = "result.txt")
+    public HighScoreService(string resultFilePath)
     {
         _resultFilePath = resultFilePath;
     }

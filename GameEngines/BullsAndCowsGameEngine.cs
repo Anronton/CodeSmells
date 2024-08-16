@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CodeSmells
+namespace CodeSmells.GameEngines
 {
     public class BullsAndCowsGameEngine : IGameEngine
     {
@@ -41,7 +41,7 @@ namespace CodeSmells
             return CheckBullsAndCows(currentGoal, guess);
         }
 
-        public bool QueryContinue(IInputOutput ioService) 
+        public bool QueryContinue(IInputOutput ioService)
         {
             ioService.WriteLine("Continue? (y/n)");
             string answer = ioService.ReadLine();
@@ -96,7 +96,7 @@ namespace CodeSmells
 
         private string FormatBullsAndCows(int bulls, int cows)
         {
-            return $"{new String('B', bulls)},{new String('C', cows)}";
+            return $"{new string('B', bulls)},{new string('C', cows)}";
         }
     }
 }
