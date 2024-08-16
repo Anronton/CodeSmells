@@ -41,6 +41,11 @@ public class WsAndLsGameEngine : IGameEngine
         return CheckBullsAndCows(currentGoal, guess);
     }
 
+    public bool IsGameWon(string guess) // denna bör också testas sen!
+    {
+        return CheckBullsAndCows(currentGoal, guess) == "WWWW,";
+    }
+
     public bool QueryContinue(IInputOutput ioService)
     {
         ioService.WriteLine("Continue? (y/n)");

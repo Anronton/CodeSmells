@@ -42,7 +42,7 @@ public class GameController
                 string result = _gameEngine.CheckGuess(guess);
                 _ioService?.WriteLine(result + Environment.NewLine);
 
-                if (result == "BBBB," || result == "WWWW,") // placholder lösning
+                if (_gameEngine.IsGameWon(guess))
                 {
                     _highScoreService.RecordResult(name, _gameEngine.NumberOfGuesses);
                     _highScoreService.ShowTopList(_ioService);
