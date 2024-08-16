@@ -21,7 +21,7 @@ class Program
 
     private static (IGameEngine, IHighScore) ChooseGame(IInputOutput ioService) // kanske inte snyggaste lösningen, men snyggare! potentiellt se över ett factory pattern?
     {
-        ioService.WriteLine("Choose a game:" + Environment.NewLine + "1. Bulls and Cows" + Environment.NewLine + "2. Wins and Losses");
+        ioService.WriteLine("Choose a game:" + Environment.NewLine + "1. Bulls and Cows" + Environment.NewLine + "2. Wins and Losses" + Environment.NewLine + "3. Mastermind");
         string gameChoice = ioService.ReadLine();
 
         switch (gameChoice)
@@ -32,6 +32,9 @@ class Program
             case "2":
                 ioService.WriteLine("Selected game: Ws and Ls" + Environment.NewLine);
                 return (new WsAndLsGameEngine(), new HighScoreService("WsAndLsScores.txt"));
+            case "3":
+                ioService.WriteLine("Selected game: Mastermind" + Environment.NewLine);
+                return (new MastermindGameEngine(), new HighScoreService("MastermindScores.txt"));
             default:
                 ioService.WriteLine("Invalid choice, defaulting to Bulls and Cows" + Environment.NewLine);
                 return (new BullsAndCowsGameEngine(), new HighScoreService("BullsAndCowScores.txt"));
