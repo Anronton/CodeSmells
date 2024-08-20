@@ -27,7 +27,7 @@ public class WsAndLsGameEngine : IGameEngine
             ioService.WriteLine("Enter your guess (4 digits):");
             string guess = ioService.ReadLine().Trim();
 
-            if (guess.Length == 4)
+            if (guess.Length == 4 && guess.All(char.IsDigit))
             {
                 return guess;
             }
@@ -48,9 +48,9 @@ public class WsAndLsGameEngine : IGameEngine
 
     public bool QueryContinue(IInputOutput ioService)
     {
-        ioService.WriteLine("Continue? (y/n)");
-        string answer = ioService.ReadLine();
-        return answer != null && answer.Trim().ToLower() == "y";
+        ioService.WriteLine("Continue? (y/n) or [Press ENTER to continue]");
+        string answer = ioService.ReadLine().Trim().ToLower();
+        return string.IsNullOrEmpty(answer) || answer == "y";
     }
 
     private string MakeGoal()

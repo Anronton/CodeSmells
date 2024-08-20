@@ -17,7 +17,7 @@ public class MastermindGameEngine : IGameEngine
     {
         currentGoal = MakeGoal();
         numberOfGuesses = 0;
-        //ioService.WriteLine("For practice, number is: " + currentGoal + Environment.NewLine); // Debug line
+        ioService.WriteLine("For practice, number is: " + currentGoal + Environment.NewLine); // Debug line
     }
     private string MakeGoal()
     {
@@ -34,25 +34,79 @@ public class MastermindGameEngine : IGameEngine
         return goal.ToString();
     }
 
-    public string CheckGuess(string guess)
-    {
-        throw new NotImplementedException();
-    }
-
     public string GetValidGuess(IInputOutput ioService)
     {
-        throw new NotImplementedException();
+        HashSet<char> validColors = new HashSet<char> { 'R', 'G', 'B', 'Y', 'O', 'P' }; // vi anger ett set av tillåtna tecken
+        while (true)
+        {
+            ioService.WriteLine("Enter your guess (4 colors). Colors shorthand: R, G, B, Y, O or P ");
+            string guess = ioService.ReadLine().Trim().ToUpper();
+
+            if (guess.Length == 4 && guess.All(c => validColors.Contains(c))) // som vi testar emot här
+            {
+                return guess;
+            }
+            ioService.WriteLine("Invalid input. Please enter exactly 4 valid colors.");
+        }
     }
 
-    
+    public string CheckGuess(string guess)
+    {
+        numberOfGuesses++;
+        return CheckBlackAndWhiteFlags(currentGoal, guess);
+    }
+
+    public string CheckBlackAndWhiteFlags(string goal, string guess)
+    {
+        int blackFlags = 0;
+        int whiteFlags = 0;
+        bool[] blackMarked = new bool[goal.Length];
+        bool[] whiteMarked = new bool[goal.Length];
+
+        //identifiera alla svarta flaggor, dvs rätt färg på rätt plats
+        for (int i = 0; i < goal.Length; i++)
+        {
+            if (goal[i] == guess[i])
+            {
+                blackFlags++;
+                blackMarked[i] = true;
+            }
+        }
+
+        //identifiera alla vita flaggor, dvs rätt färg på fel plats
+        for (int i = 0; i < goal.Length; i++)
+        {
+            if (!blackMarked[i])
+            {
+                for (int j = 0; j < guess.Length; j++)
+                {
+                    if (!blackMarked[j] && !whiteMarked[j] && goal[i] == guess[j])
+                    {
+                        whiteFlags++;
+                        whiteMarked[j] = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        return FormatBlackAndWhiteFlags(blackFlags, whiteFlags);
+    }
+
+    private string FormatBlackAndWhiteFlags(int blackFlags, int whiteFlags)
+    {
+        return $"{new string('B', blackFlags)},{new string('W', whiteFlags)}";
+    }
 
     public bool IsGameWon(string guess)
     {
-        throw new NotImplementedException();
+        return CheckBlackAndWhiteFlags(currentGoal, guess) == "BBBB,";
     }
 
     public bool QueryContinue(IInputOutput ioService)
     {
-        throw new NotImplementedException();
+        ioService.WriteLine("Continue? (y/n) or [Press ENTER to continue]");
+        string answer = ioService.ReadLine().Trim().ToLower();
+        return string.IsNullOrEmpty(answer) || answer == "y";
     }
 }

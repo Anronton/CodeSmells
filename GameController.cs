@@ -1,4 +1,5 @@
 ﻿using CodeSmells.Classes;
+using CodeSmells.Factories;
 using CodeSmells.Interfaces;
 using CodeSmells.Services;
 using MooGame;
@@ -14,14 +15,28 @@ namespace CodeSmells;
 public class GameController
 {
     private readonly IInputOutput _ioService;
-    private readonly IHighScore _highScoreService;
-    private readonly IGameEngine _gameEngine;
+    private IHighScore _highScoreService;
+    private IGameEngine _gameEngine;
 
-    public GameController(IInputOutput ioService, IHighScore highScoreService, IGameEngine gameEngine)
+    private readonly IHighScoreServiceFactory _highScoreServiceFactory;
+    private readonly IGameEngineFactory _gameEngineFactory;
+
+    public GameController(IInputOutput ioService, IHighScoreServiceFactory highScoreServiceFactory, IGameEngineFactory gameEngineFactory)
     {
         _ioService = ioService;
-        _highScoreService = highScoreService;
-        _gameEngine = gameEngine;
+        _highScoreServiceFactory = highScoreServiceFactory;
+        _gameEngineFactory = gameEngineFactory;
+    }
+
+    public void ChooseGame()
+    {
+        _ioService.WriteLine("Choose a game:" + Environment.NewLine + "1. Bulls and Cows" + Environment.NewLine + "2. Wins and Losses" + Environment.NewLine + "3. Mastermind");
+        string gameChoice = _ioService.ReadLine();
+
+        _gameEngine = _gameEngineFactory.CreateGameEngine(gameChoice);
+        _highScoreService = _highScoreServiceFactory.CreateHighScoreService(gameChoice);
+
+        StartGame();
     }
 
     public void StartGame()
