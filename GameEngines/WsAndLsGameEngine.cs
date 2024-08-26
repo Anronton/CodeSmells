@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace CodeSmells.GameEngines;
 
-public class WsAndLsGameEngine : IGameEngine
-{
+public class WsAndLsGameEngine : IGameEngine // Detta spel är egentligen bara en copy-paste av BullsAndCows
+{                                            // vi hade den bara i tidigt skede för att testa ifall spelvalsfunktionen fungerade innan vi byggde MasterMind
     private string currentGoal;
     private int numberOfGuesses;
     public int NumberOfGuesses => numberOfGuesses;
@@ -17,7 +17,7 @@ public class WsAndLsGameEngine : IGameEngine
     {
         currentGoal = MakeGoal();
         numberOfGuesses = 0;
-        ioService.WriteLine("For practice, number is: " + currentGoal + Environment.NewLine); // Debug line
+        ioService.WriteLine("For practice, number is: " + currentGoal + Environment.NewLine);
         ioService.WriteLine("Enter your guess (4 digits):");
     }
 
@@ -41,7 +41,7 @@ public class WsAndLsGameEngine : IGameEngine
         return CheckBullsAndCows(currentGoal, guess);
     }
 
-    public bool IsGameWon(string guess) // denna bör också testas sen!
+    public bool IsGameWon(string guess)
     {
         return CheckBullsAndCows(currentGoal, guess) == "WWWW,";
     }
@@ -62,35 +62,33 @@ public class WsAndLsGameEngine : IGameEngine
         return string.Join("", shuffledDigits);
     }
 
-    public string CheckBullsAndCows(string goal, string guess) // se kanske över senare för potentiell ytterligare SoP
+    public string CheckBullsAndCows(string goal, string guess)
     {
         int bulls = 0;
         int cows = 0;
         bool[] bullMarked = new bool[goal.Length];
         bool[] cowMarked = new bool[goal.Length];
 
-        // Först räkna och markera tjurar
         for (int i = 0; i < Math.Min(4, goal.Length); i++)
         {
             if (goal[i] == guess[i])
             {
                 bulls++;
-                bullMarked[i] = true;  // Markera denna position som en tjur
+                bullMarked[i] = true;
             }
         }
 
-        // Nu räkna kor, ignorera tjur-markeringar
         for (int i = 0; i < Math.Min(4, goal.Length); i++)
         {
-            if (!bullMarked[i])  // Söker kor bara om inte redan tjur
+            if (!bullMarked[i])
             {
                 for (int j = 0; j < Math.Min(4, guess.Length); j++)
                 {
                     if (i != j && goal[i] == guess[j] && !bullMarked[j] && !cowMarked[j])
                     {
                         cows++;
-                        cowMarked[j] = true;  // Markera denna position för att undvika dubbelräkning av samma ko
-                        break;  // Bryt loopen när en matchning hittas
+                        cowMarked[j] = true;
+                        break;  
                     }
                 }
             }

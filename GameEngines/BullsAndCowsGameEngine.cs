@@ -17,15 +17,14 @@ public class BullsAndCowsGameEngine : IGameEngine
     {
         currentGoal = MakeGoal();
         numberOfGuesses = 0;
-        ioService.WriteLine("For practice, number is: " + currentGoal + Environment.NewLine); // Debug line
-        ioService.WriteLine("Enter your guess (4 digits):"); // ny placering
+        ioService.WriteLine("For practice, number is: " + currentGoal + Environment.NewLine);
+        ioService.WriteLine("Enter your guess (4 digits):");
     }
 
     public string GetValidGuess(IInputOutput ioService)
     {
         while (true)
         {
-            //ioService.WriteLine("Enter your guess (4 digits):");
             string guess = ioService.ReadLine().Trim();
 
             if (guess.Length == 4 && guess.All(char.IsDigit))
@@ -42,7 +41,7 @@ public class BullsAndCowsGameEngine : IGameEngine
         return CheckBullsAndCows(currentGoal, guess);
     }
 
-    public bool IsGameWon(string guess) // denna bör också testas sen!
+    public bool IsGameWon(string guess)
     {
         return CheckBullsAndCows(currentGoal, guess) == "BBBB,";
     }
@@ -63,7 +62,7 @@ public class BullsAndCowsGameEngine : IGameEngine
         return string.Join("", shuffledDigits);
     }
 
-    public string CheckBullsAndCows(string goal, string guess) // denna kanske vi har överarbetat 
+    public string CheckBullsAndCows(string goal, string guess) // se över senare! 
     {
         int bulls = 0;
         int cows = 0;
@@ -76,22 +75,22 @@ public class BullsAndCowsGameEngine : IGameEngine
             if (goal[i] == guess[i])
             {
                 bulls++;
-                bullMarked[i] = true;  // Markera denna position som en tjur
+                bullMarked[i] = true;
             }
         }
 
-        // Nu räkna kor, ignorera tjur-markeringar
+        // Nu räkna och markera kor, ignorera tjur-markeringar
         for (int i = 0; i < Math.Min(4, goal.Length); i++)
         {
-            if (!bullMarked[i])  // Söker kor bara om inte redan tjur
+            if (!bullMarked[i])
             {
                 for (int j = 0; j < Math.Min(4, guess.Length); j++)
                 {
                     if (i != j && goal[i] == guess[j] && !bullMarked[j] && !cowMarked[j])
                     {
                         cows++;
-                        cowMarked[j] = true;  // Markera denna position för att undvika dubbelräkning av samma ko
-                        break;  // Bryt loopen när en matchning hittas
+                        cowMarked[j] = true;
+                        break; 
                     }
                 }
             }

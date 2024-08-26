@@ -8,13 +8,18 @@ using System.Threading.Tasks;
 
 namespace CodeSmells.Services;
 
-public class HighScoreService : IHighScore
+public class HighScoreService : IHighScore // vi tacklar strukturen och testningen av denna demon imorrn!
 {
     private readonly string _resultFilePath;
 
     public HighScoreService(string resultFilePath)
     {
         _resultFilePath = resultFilePath;
+    }
+
+    public string GetResultFilePath() // används bara för testning, kanske inte bästa praxis
+    {
+        return _resultFilePath;
     }
 
     public void RecordResult(string playerName, int totalGuesses)
