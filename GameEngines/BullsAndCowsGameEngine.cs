@@ -17,14 +17,15 @@ public class BullsAndCowsGameEngine : IGameEngine
     {
         currentGoal = MakeGoal();
         numberOfGuesses = 0;
-        //ioService.WriteLine("For practice, number is: " + currentGoal + Environment.NewLine); // Debug line
+        ioService.WriteLine("For practice, number is: " + currentGoal + Environment.NewLine); // Debug line
+        ioService.WriteLine("Enter your guess (4 digits):"); // ny placering
     }
 
     public string GetValidGuess(IInputOutput ioService)
     {
         while (true)
         {
-            ioService.WriteLine("Enter your guess (4 digits):");
+            //ioService.WriteLine("Enter your guess (4 digits):");
             string guess = ioService.ReadLine().Trim();
 
             if (guess.Length == 4 && guess.All(char.IsDigit))
@@ -62,7 +63,7 @@ public class BullsAndCowsGameEngine : IGameEngine
         return string.Join("", shuffledDigits);
     }
 
-    public string CheckBullsAndCows(string goal, string guess) // se kanske över senare för potentiell ytterligare SoP
+    public string CheckBullsAndCows(string goal, string guess) // denna kanske vi har överarbetat 
     {
         int bulls = 0;
         int cows = 0;

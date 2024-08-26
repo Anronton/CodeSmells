@@ -18,13 +18,13 @@ public class WsAndLsGameEngine : IGameEngine
         currentGoal = MakeGoal();
         numberOfGuesses = 0;
         ioService.WriteLine("For practice, number is: " + currentGoal + Environment.NewLine); // Debug line
+        ioService.WriteLine("Enter your guess (4 digits):");
     }
 
-    public string GetValidGuess(IInputOutput ioService) // eventuellt typsäkra så att den bara tar emot int
+    public string GetValidGuess(IInputOutput ioService)
     {
         while (true)
         {
-            ioService.WriteLine("Enter your guess (4 digits):");
             string guess = ioService.ReadLine().Trim();
 
             if (guess.Length == 4 && guess.All(char.IsDigit))

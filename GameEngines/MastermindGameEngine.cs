@@ -18,6 +18,7 @@ public class MastermindGameEngine : IGameEngine
         currentGoal = MakeGoal();
         numberOfGuesses = 0;
         ioService.WriteLine("For practice, number is: " + currentGoal + Environment.NewLine); // Debug line
+        ioService.WriteLine("Enter your guess (4 colors). Colors shorthand: R, G, B, Y, O or P ");
     }
     private string MakeGoal()
     {
@@ -39,7 +40,7 @@ public class MastermindGameEngine : IGameEngine
         HashSet<char> validColors = new HashSet<char> { 'R', 'G', 'B', 'Y', 'O', 'P' }; // vi anger ett set av tillåtna tecken
         while (true)
         {
-            ioService.WriteLine("Enter your guess (4 colors). Colors shorthand: R, G, B, Y, O or P ");
+            //ioService.WriteLine("Enter your guess (4 colors). Colors shorthand: R, G, B, Y, O or P ");
             string guess = ioService.ReadLine().Trim().ToUpper();
 
             if (guess.Length == 4 && guess.All(c => validColors.Contains(c))) // som vi testar emot här
