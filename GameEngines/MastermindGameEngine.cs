@@ -12,9 +12,12 @@ public class MastermindGameEngine : IGameEngine
     private string currentGoal;
     private int numberOfGuesses;
     public int NumberOfGuesses => numberOfGuesses;
+    private bool _gameWon;
+    public bool GameWon => _gameWon;
 
     public void InitializeGame(IInputOutput ioService)
     {
+        _gameWon = false;
         currentGoal = MakeGoal();
         numberOfGuesses = 0;
         ioService.WriteLine("For practice, number is: " + currentGoal + Environment.NewLine);
@@ -53,7 +56,12 @@ public class MastermindGameEngine : IGameEngine
     public string CheckGuess(string guess)
     {
         numberOfGuesses++;
-        return CheckBlackAndWhiteFlags(currentGoal, guess);
+        string result = CheckBlackAndWhiteFlags(currentGoal, guess);
+        if(result == "BBBB,")
+        {
+            _gameWon = true;
+        }
+        return result;
     }
 
     public string CheckBlackAndWhiteFlags(string goal, string guess)
@@ -100,7 +108,7 @@ public class MastermindGameEngine : IGameEngine
 
     public bool IsGameWon(string guess)
     {
-        return CheckBlackAndWhiteFlags(currentGoal, guess) == "BBBB,";
+        return _gameWon;
     }
 
     public bool QueryContinue(IInputOutput ioService)

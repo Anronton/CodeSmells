@@ -13,8 +13,12 @@ public class BullsAndCowsGameEngine : IGameEngine
     private int numberOfGuesses;
     public int NumberOfGuesses => numberOfGuesses;
 
+    private bool _gameWon;
+    public bool GameWon => _gameWon;
+
     public void InitializeGame(IInputOutput ioService)
     {
+        _gameWon = false;
         currentGoal = MakeGoal();
         numberOfGuesses = 0;
         ioService.WriteLine("For practice, number is: " + currentGoal + Environment.NewLine);
@@ -38,12 +42,17 @@ public class BullsAndCowsGameEngine : IGameEngine
     public string CheckGuess(string guess)
     {
         numberOfGuesses++;
-        return CheckBullsAndCows(currentGoal, guess);
+        string result = CheckBullsAndCows(currentGoal, guess);
+        if(result == "BBBB,")
+        {
+            _gameWon = true;
+        }
+        return result;
     }
 
     public bool IsGameWon(string guess)
     {
-        return CheckBullsAndCows(currentGoal, guess) == "BBBB,";
+        return _gameWon;
     }
 
     public bool QueryContinue(IInputOutput ioService)

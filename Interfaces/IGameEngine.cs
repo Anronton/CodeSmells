@@ -13,6 +13,7 @@ public interface IGameEngine
     string CheckGuess(string guess);
     bool QueryContinue(IInputOutput ioService);
     int NumberOfGuesses { get; }
+    bool GameWon { get; }
     bool IsGameWon(string guess);
 
 }
