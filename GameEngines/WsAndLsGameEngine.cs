@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace CodeSmells.GameEngines;
 
-public class WsAndLsGameEngine : IGameEngine // Detta spel är egentligen bara en copy-paste av BullsAndCows
+public class WsAndLsGameEngine : IGameEngine // Detta spel är egentligen bara en copy-paste av BullsAndCows(tidigare version)
 {                                            // vi hade den bara i tidigt skede för att testa ifall spelvalsfunktionen fungerade innan vi byggde MasterMind
     private string currentGoal;
     private int numberOfGuesses;
     public int NumberOfGuesses => numberOfGuesses;
     private bool _gameWon;
-    public bool GameWon => _gameWon; // testar
+    public bool GameWon => _gameWon; 
 
     public void InitializeGame(IInputOutput ioService)
     {

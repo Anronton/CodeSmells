@@ -1,4 +1,5 @@
-﻿using CodeSmells.Interfaces;
+﻿using CodeSmells.Classes;
+using CodeSmells.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,12 @@ public class BullsAndCowsGameEngine : IGameEngine
 
     private bool _gameWon;
     public bool GameWon => _gameWon;
+    private INumberGenerator _numberGenerator;
+
+    public BullsAndCowsGameEngine(INumberGenerator numberGenerator)
+    {
+        _numberGenerator = numberGenerator;
+    }
 
     public void InitializeGame(IInputOutput ioService)
     {
@@ -64,14 +71,11 @@ public class BullsAndCowsGameEngine : IGameEngine
 
     private string MakeGoal()
     {
-        Random randomGenerator = new Random();
-        var digits = Enumerable.Range(0, 10).ToList();
-        var shuffledDigits = digits.OrderBy(d => randomGenerator.Next()).Take(4).ToList();
-
-        return string.Join("", shuffledDigits);
+        var digits = _numberGenerator.GenerateNumbers(4, 0, 10); 
+        return string.Join("", digits);
     }
 
-    public string CheckBullsAndCows(string goal, string guess) // se över senare! 
+    public string CheckBullsAndCows(string goal, string guess) 
     {
         int bulls = 0;
         int cows = 0;
