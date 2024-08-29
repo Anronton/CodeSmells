@@ -12,7 +12,6 @@ public class PlayerData
     public int TotalGames { get; private set; }
     public int TotalGuesses;
 
-
     public PlayerData(string name, int guesses)
     {
         Name = name;

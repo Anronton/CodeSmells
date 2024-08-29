@@ -30,13 +30,25 @@ public class HighScoreService : IHighScore // vi tacklar strukturen och testning
         }
     }
 
-    public void ShowTopList(IInputOutput io) 
+    public void ShowTopList(IInputOutput io)
+    {
+        var results = ReadPlayerData();
+        SortPlayerData(results);
+
+        io.WriteLine("Player   games  average");
+        foreach (var p in results)
+        {
+            io.WriteLine($"{p.Name,-9}{p.TotalGames,5:D}{p.Average(),9:F2}");
+        }
+    }
+
+    private List<PlayerData> ReadPlayerData()
     {
         var results = new List<PlayerData>();
         using (var input = new StreamReader(_resultFilePath))
         {
             string line;
-            while((line = input.ReadLine()) != null)
+            while ((line = input.ReadLine()) != null)
             {
                 var nameAndGuesses = line.Split(new string[] { "#&#" }, StringSplitOptions.None); // en separator som säkerställer korrekt separering mellan namn och antal gissningar
                 var name = nameAndGuesses[0]; //name är första delen
@@ -53,70 +65,12 @@ public class HighScoreService : IHighScore // vi tacklar strukturen och testning
                 }
             }
         }
+        return results;
+    }
 
+    private void SortPlayerData(List<PlayerData> results)
+    {
         results.Sort((p1, p2) => p1.Average().CompareTo(p2.Average()));
-        io.WriteLine("Player   games  average");
-        foreach (var p in results)
-        {
-            io.WriteLine($"{p.Name,-9}{p.TotalGames,5:D}{p.Average(),9:F2}"); 
-        }
     }
     // formattering: namn fältbredd på 9 tecken justerat till vänster, Ngames 5heltal justerat till höger, flytande tal med 2decimaler totalt 9tecken ink decimaltecknet
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //public void ShowTopList() // den gamla för att motivera steg för steg sen om det behövs
-    //{
-    //    StreamReader input = new StreamReader("result.txt");
-    //    List<PlayerData> results = new List<PlayerData>();
-    //    string line;
-    //    while ((line = input.ReadLine()) != null)
-    //    {
-    //        string[] nameAndScore = line.Split(new string[] { "#&#" }, StringSplitOptions.None);
-    //        string name = nameAndScore[0];
-    //        int guesses = Convert.ToInt32(nameAndScore[1]);
-    //        PlayerData pd = new PlayerData(name, guesses);
-    //        int pos = results.IndexOf(pd);
-    //        if (pos < 0)
-    //        {
-    //            results.Add(pd);
-    //        }
-    //        else
-    //        {
-    //            results[pos].Update(guesses);
-    //        }
-
-
-    //    }
-    //    results.Sort((p1, p2) => p1.Average().CompareTo(p2.Average()));
-    //    _io.WriteLine("Player   games average");
-    //    foreach (PlayerData p in results)
-    //    {
-    //        _io.WriteLine(string.Format("{0,-9}{1,5:D}{2,9:F2}", p.Name, p.NGames, p.Average()));
-    //    }
-    //    input.Close();
-    //}
 }
