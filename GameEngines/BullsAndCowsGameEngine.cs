@@ -16,7 +16,8 @@ public class BullsAndCowsGameEngine : IGameEngine
 
     private bool _gameWon;
     public bool GameWon => _gameWon;
-    private INumberGenerator _numberGenerator;
+    private INumberGenerator _numberGenerator; // Skapade och använde detta interface för att möjliggöra mockning av currentGoal i tester
+                                               // genom att implementera en anpassad version av INumberGenerator. 
 
     public BullsAndCowsGameEngine(INumberGenerator numberGenerator)
     {

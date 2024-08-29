@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CodeSmells.Services;
 
-public class HighScoreService : IHighScore // vi tacklar strukturen och testningen av denna demon imorrn!
+public class HighScoreService : IHighScore
 {
     private readonly string _resultFilePath;
 
@@ -17,7 +17,7 @@ public class HighScoreService : IHighScore // vi tacklar strukturen och testning
         _resultFilePath = resultFilePath;
     }
 
-    public string GetResultFilePath() // används bara för testning, kanske inte bästa praxis
+    public string GetResultFilePath() // används bara för testning av HighScoreServiceFactory, kanske inte bästa praxis
     {
         return _resultFilePath;
     }
@@ -41,6 +41,7 @@ public class HighScoreService : IHighScore // vi tacklar strukturen och testning
             io.WriteLine($"{p.Name,-9}{p.TotalGames,5:D}{p.Average(),9:F2}");
         }
     }
+    // formattering: namn fältbredd på 9 tecken justerat till vänster, TotalGames 5heltal justerat till höger, flytande tal med 2decimaler totalt 9tecken ink decimaltecknet
 
     private List<PlayerData> ReadPlayerData()
     {
@@ -72,5 +73,4 @@ public class HighScoreService : IHighScore // vi tacklar strukturen och testning
     {
         results.Sort((p1, p2) => p1.Average().CompareTo(p2.Average()));
     }
-    // formattering: namn fältbredd på 9 tecken justerat till vänster, Ngames 5heltal justerat till höger, flytande tal med 2decimaler totalt 9tecken ink decimaltecknet
 }
