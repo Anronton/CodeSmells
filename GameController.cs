@@ -30,7 +30,10 @@ public class GameController
 
     public void ChooseGame()
     {
-        _ioService.WriteLine("Choose a game:" + Environment.NewLine + "1. Bulls and Cows" + Environment.NewLine + "2. Wins and Losses" + Environment.NewLine + "3. Mastermind");
+        _ioService.WriteLine("Choose a game:" + Environment.NewLine 
+                           + "1. Bulls and Cows" + Environment.NewLine 
+                           + "2. Wins and Losses" + Environment.NewLine 
+                           + "3. Mastermind");
         string gameChoice = _ioService.ReadLine();
 
         _gameEngine = _gameEngineFactory.CreateGameEngine(gameChoice);
